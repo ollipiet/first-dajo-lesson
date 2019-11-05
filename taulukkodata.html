@@ -1,0 +1,289 @@
+
+<!-- saved from url=(0044)https://introcomputing.org/table-1-data.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Taulukot</title>
+<link rel="stylesheet" href="./Table Data_files/style.css" type="text/css">
+
+<link id="avast_os_ext_custom_font" href="chrome-extension://eofcbnmajmjmplflapaojjnihcjkigck/common/ui/fonts/fonts.css" rel="stylesheet" type="text/css"></head>
+<body>
+<script type="text/javascript" src="./Table Data_files/cs101.js.lataus"></script>
+<script type="text/javascript" src="./Table Data_files/cs101-table.js.lataus"></script>
+<script type="text/javascript" src="./Table Data_files/cs101-simulation.js.lataus"></script>
+
+<!-- njp
+<div id=warning-output></div>
+-->
+
+<h1>Taulukot</h1>
+
+<p>
+
+
+
+<!--
+http://www.moma.org/interactives/exhibitions/2011/talktome/objects/145523/
+-->
+
+<!--
+
+-table structure row/data/applications
+-baby data
+-?limit rows? -- have print limit, so maybe don't bother
+-need to expand line/logic checker today, blah
+ -could detect single =
+
+-bunch of simple == name queries
+
+-starts with (baby data)
+-then add && ||
+-many examples
+-exercises possible
+
+-count one thing pattern
+-count multiple things - two patterns
+
+-then the survey
+
+TODO:
+ -field case sensitive -- fix soon?
+ -improve CSV parsing
+ -
+-->
+
+</p><ul class="slide">
+<li>Uusi datamuoto -- taulukot
+</li><li>Koodi, joka toimii taulukoissa
+</li><li>Taulukko on yleinen tapa organisoida dataa tietokoneilla
+</li></ul>
+
+<p>
+Luodaan seuraavaksi katsaus taulukkodataan. Dataa voidaan varastoida ja manipuloida tietokoneessa taulukoiden avulla. Taulukot ovat yleinen tapa järjestää merkkijonoja (luonnollista kieltä), lukuja tai esimerkiksi päivämääriä. Erityisesti tarkaselemme Yhdysvaltain sosiaaliturvajärjestelmän <a href="http://www.ssa.gov/oact/babynames/">lasten nimet</a> -taulukkoa.
+
+
+<!--
+bbedit to fix the data
+
+\s*<td>(\d+)</td> <td>(\w+)</td> <td>(\w+)</td>
+\2,\1,male,2009\r\3,\1,female,2009\r
+
+\s*</tr>\s*<tr.*?>
+\r
+-->
+
+</p><h2>Lasten nimet -esimerkki</h2>
+
+<ul class="slide">
+<li>Vuosittain syntyneiden lasten nimet
+</li><li>1000 suosituinta poikien ja tyttöjen nimeä, yhteensä 2000
+</li><li>Järjestetty taulukkoon
+<br><b>Sarakkeet:</b> nimi, sijoitus, sukupuoli, vuosi
+<br><b>Rivit:</b> jokaisella rivillä on yhteen nimeen liittyvä data
+</li></ul>
+
+<p>
+<img src="./Table Data_files/table.png" alt="table organized as fields and rows">
+
+</p><ul>
+<li><b>Taulukko</b> koostuu 2000 <b>rivistä</b>; Jokaisella rivillä on yhteen nimeen liittyvät tiedot
+</li><li>Jokainen rivi on jaettu neljään <b>sarakkeeseen</b>
+</li><li>Jokaisella neljästä sarakkeesta on oma nimensä. Sarakkeiden nimet: (vauvan) nimi, sijoitus, sukupuoli, vuosi
+</li></ul>
+
+<h2>Taulukot ovat hyvin yleisiä</h2>
+
+<ul class="slide">
+<li>Suorakulmaisen muotoiset taulukot ovat yleisimpiä
+</li><li>Tietokanta: alkeellisen taulukkodatan laajennus
+</li><li>Sarakkeiden lukumäärä on pieni
+</li><li>Rivejä voi olla jopa miljoonia tai miljardeja
+</li><li>Esim. sähköpostin saapuneet -kansio: yksi rivi = yksi saapunut sähköposti, sarakkeet: päivämäärä, otsikko, keneltä tullut ...
+</li><li>Esim. Tori.fi: yksi rivi = myytävä tavara, sarakkeet: kuvaus, hinta, myyjä, päivämäärä ... 
+</li></ul>
+
+<p>Suuri osa tietokoneella säilytettävästä tiedosta on järjestetty taulukoihin. Jokainen "asia", jonka haluamme varastoida - lapsen nimi, jonkun yhteystiedot, Tori.fi-ilmoitus - on yhdellä rivillä. Rivillä olevien sarakkeiden lukumäärä on yleensä pieni - sarakkeissa on tietoa, joka liittyy varastoitavaan "asiaan". Esimerkiksi yhdelle riville säilötyllä Tori.fi-ilmoituksella on muutama sarake: lyhyt kuvaus, pidempi kuvaus, hinta, myyjä ja muutama muu sarake.
+
+</p><p>Sarakkeita on vähän, mutta rivejä voi olla valtavasti - tuhansia tai miljoonia. Tietokanta-termi viittaa laajempaan kokonaisuuteen taulukoita. Myös taulukkolaskentaohjelmissa (esim. Excel) käytetyt tiedot varastoidaan tyypillisesti taulukoihin.
+
+</p><h2>Taulukko-ohjelmointi</h2>
+
+<p>
+We'll start with some code -- SimpleTable -- which will serve as a foundation for you to write table code. Run the code to see what it does.
+Aloitamme yksinkertaisella ohjelmalla nimeltään SimpleTable, joka toimii perustuksena taulukko-ohjelmillemme. Suorita ohjelma nähdäksesi, mitä se tekee.
+
+</p><ul class="slide">
+<li>Vauvojen nimidata on "baby-2010.csv"-tiedostossa
+<br>--".csv" on lyhenne sanoista "comma separated values", ja se on laajalti käytetty tallennusmuoto, jolla taulukko voidaan varastoida tekstitiedostona.
+</li><li><code>for (row: table) { </code> -koodinpätkä on silmukka, jonka sisältä löytyvä
+</li><li>print(row) tulostaa kunkin rivin sarakkeen yhdelle riville.
+</li></ul>
+
+
+<p style="max-width:1000">
+<table class="run">
+<tbody><tr><td valign="top" width="550"> <!-- CODE -->
+<textarea id="table1-1" rows="9" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby-2010.csv");
+
+for (row: table) {
+  print(row);
+}</textarea>
+<br><input type="button" style="width:220;height:40;background-color:lightgray" value="Run" onclick="evaluateClear(&quot;table1-1&quot;)">
+</td>
+<td valign="top"> <!-- OUTPUT -->
+<div id="table1-1-output" style="font-family:courier;font-size:14;"></div>
+</td></tr>
+</tbody></table>
+
+
+
+</p><h2>Taulukkokyselyn logiikkaa</h2>
+
+<ul class="slide">
+<li>Seuraavaksi valitsemme rivit, jotka haluamme näkyviin (if-lauseke koodissa)
+</li><li>Tietokantojen terminologiaa -- "kysely" (eng. query) tietokannasta
+</li><li>esimerkki: valitse rivit, joissa nimen sijoitus on 6.
+<br><code>if (row.getField("rank") == 6) { ...</code>
+</li></ul>
+
+<p style="max-width:1000">
+<table class="run">
+<tbody><tr><td valign="top" width="550"> <!-- CODE -->
+<textarea id="table1-2" rows="9" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby-2010.csv");
+for (row: table) {
+  if (row.getField("rank") == 6) {
+    print(row);
+  }
+}</textarea>
+<br><input type="button" style="width:220;height:40;background-color:lightgray" value="Run" onclick="evaluateClear(&quot;table1-2&quot;)">
+</td>
+<td valign="top"> <!-- OUTPUT -->
+<div id="table1-2-output" style="font-family:courier;font-size:14;"></div>
+</td></tr>
+</tbody></table>
+
+
+</p><p>Ylläoleva ohjelma käy silmukkana läpi jokaisen rivin taulukossamme. If-lauseke tulostaa rivin, jos sille annettu ehto on ottta - tässä ehtona on, että rivillä olevan nimen sijoitus täytyy olla 6. If-lausekkeella voisi hakea mitä tahansa muutakin tietoa taulukosta.
+
+</p><ul class="slide">
+<li><code>row.getField(<i>"field-name"</i>)</code> -- valitsee sarakkeen yhdeltä riviltä
+</li><li>Sarakkeiden nimet (englanniksi) nimitaulukossamme: name, rank, gender, year
+</li><li><code>==</code> testaa, ovatko kaksi arvoa samat
+</li><li>Varoitus: yksittäistä yhtäsuuruusmerkkiä <code>=</code> käytetään arvon asettamiseen muuttujalle, ei vertailuun. Käytä kaksinkertaista yhtäsuuruusmerkkiä <code>==</code> if-testauksessa.
+</li><li>Muita vertailuoperaatioita: &lt; &gt; &lt;= &gt;=
+</li><li>Esim. valitse rivit, joilla lapsen nimi on "Alice":
+<br><code>if (row.getField("name") == "Alice") { ...</code>
+</li></ul>
+
+
+<p style="max-width:1000">
+<table class="run">
+<tbody><tr><td valign="top" width="550"> <!-- CODE -->
+<textarea id="table1-3" rows="10" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby-2010.csv");
+for (row: table) {
+  if (row.getField("name") == "Alice") {
+    print(row);
+  }
+}</textarea>
+<br><input type="button" style="width:220;height:40;background-color:lightgray" value="Run" onclick="evaluateClear(&quot;table1-3&quot;)">
+</td>
+<td valign="top"> <!-- OUTPUT -->
+<div id="table1-3-output" style="font-family:courier;font-size:14;"></div>
+</td></tr>
+</tbody></table>
+
+
+</p><p>
+Rivi-objektilla on <code>row.getField(<i>"field-name"</i>)</code>-funktio, joka palauttaa datan kyseisen rivin yhdeltä sarakkeelta. Jokaisella sarakkeella on nimensä - "name", "rank", "gender" ja "year" tässä tapauksessa - ja sarakkeen nimi annetaan getField()-funktiolle osoittaaksemme, minkä sarakkeen tiedon haluamme, esim. <code>row.getField("rank")</code> palauttaa kyseisen rivin sijoituksen, siis rank-sarakkeen tiedon.
+
+</p><p>
+JavaScriptillä voit kokeilla, ovatko kaksi arvoa samat kahdella yhtäsuuruusmerkillä: <code>==</code>. Käyttämällä "=="-merkkejä ohjelma kokeilee, onko sarakkeessa oleva nimi "Alice": <code>row.getField("name") == "Alice"</code>
+
+</p><p>
+Huomaa, että <b>yksittäinen</b> yhtäsuuruusmerkki <code>=</code> antaa arvon muuttujalle, eikä vertaile kahta arvoa. Varsin yleinen virhe on laittaa yksittäinen yhtäsuuruusmerkki testauslausekkeeseen, kun pitäisi laittaa kaksi. Tällä kurssilla "Run"-nappi koodien alla huomaa kyllä vahingossa laitetun yksittäisen yhtäsuuruusmerkin if-testauksessa ja antaa virhekoodin. Vertailua voi tehdä myös esimerkiksi suurempi kuin tai pienempi kuin -merkeillä: &lt; &gt; &lt;= &gt;=
+
+
+</p><h2>Taulukkokyselyn esimerkkejä</h2>
+
+<p style="max-width:1000">
+<table class="run">
+<tbody><tr><td valign="top" width="550"> <!-- CODE -->
+<textarea id="table1-4" rows="10" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby-2010.csv");
+for (row: table) {
+  if (row.getField("name") == "Alice") {
+    print(row);
+  }
+}</textarea>
+<br><input type="button" style="width:220;height:40;background-color:lightgray" value="Run" onclick="evaluateClear(&quot;table1-4&quot;)">
+</td>
+<td valign="top"> <!-- OUTPUT -->
+<div id="table1-4-output" style="font-family:courier;font-size:14;"></div>
+</td></tr>
+</tbody></table>
+
+
+</p><p>
+Kirjoita ylläolevaan ohjelmaan koodia, joka etsii nämä tiedot:
+
+</p><ul>
+<li>Vauvataulukon sarakkeet: name, rank, gender, year
+</li><li>Nimisarakkeen arvo on "Alice", "Robert", "Bob", "Abby", "Abbey" (kokeile näitä yksi kerrallaan)
+</li><li>rank-sarakkeen arvo on 1
+</li><li>rank-sarakkeen arvo on &lt; 10
+</li><li>rank-sarakkeen arvo on&lt;= 10
+</li><li>rank-sarakkeen arvo on &gt; 990
+</li><li>sukupuoli-sarakkeen arvo on "girl"
+</li><li>Kaikissa esimerkeissä on sama idea: for-silmukka käy läpi koko taulukon kaikki 2000 riviä ja arvioi niitä yksi kerrallaan. Silmukka tulostaa ne rivit, joilla arvo on haluamamme.
+</li></ul>
+
+<p>Ratkaisut:
+
+</p><div><button onclick="unhide(this)">Show</button><div style="display:none">
+
+<p>If-kysely silmukan sisällä:
+</p><pre>table = new SimpleTable("baby-2010.csv");
+for (row: table) {
+  if (row.getField("name") == "Alice") {
+    print(row);
+  }
+}
+// Change string to "Robert", "Bob", etc.
+</pre>
+<hr>
+<pre>  if (row.getField("rank") == 1) {
+    print(row);
+  }
+</pre>
+<hr>
+<pre>  if (row.getField("rank") &lt; 10) {
+    print(row);
+  }
+</pre>
+
+<hr>
+<pre>  if (row.getField("rank") &lt;= 10) {
+    print(row);
+  }
+</pre>
+
+<hr>
+<pre>  if (row.getField("rank") &gt; 990) {
+    print(row);
+  }
+</pre>
+
+<hr>
+<pre>  if (row.getField("gender") == "girl") {
+    print(row);
+  }
+</pre>
+
+</div></div>
+
+
+<p>
+&gt; <a href="https://introcomputing.org/table-1-exercises.html">exercises</a>
+
+
+
+
+
+</p></body></html>

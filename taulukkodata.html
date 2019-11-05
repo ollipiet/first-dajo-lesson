@@ -81,7 +81,7 @@ bbedit to fix the data
 </li></ul>
 
 <p>
-<img src="./Table Data_files/table.png" alt="table organized as fields and rows">
+<img src="lasten_nimi_esim.png" alt="table organized as fields and rows">
 
 </p><ul>
 <li><b>Taulukko</b> koostuu 2000 <b>rivistä</b>; Jokaisella rivillä on yhteen nimeen liittyvät tiedot
@@ -111,7 +111,7 @@ We'll start with some code -- SimpleTable -- which will serve as a foundation fo
 Aloitamme yksinkertaisella ohjelmalla nimeltään SimpleTable, joka toimii perustuksena taulukko-ohjelmillemme. Suorita ohjelma nähdäksesi, mitä se tekee.
 
 </p><ul class="slide">
-<li>Vauvojen nimidata on "baby-2010.csv"-tiedostossa
+<li>Vauvojen nimidata on "baby_2018.csv"-tiedostossa
 <br>--".csv" on lyhenne sanoista "comma separated values", ja se on laajalti käytetty tallennusmuoto, jolla taulukko voidaan varastoida tekstitiedostona.
 </li><li><code>for (row: table) { </code> -koodinpätkä on silmukka, jonka sisältä löytyvä
 </li><li>print(row) tulostaa kunkin rivin sarakkeen yhdelle riville.
@@ -121,7 +121,7 @@ Aloitamme yksinkertaisella ohjelmalla nimeltään SimpleTable, joka toimii perustu
 <p style="max-width:1000">
 <table class="run">
 <tbody><tr><td valign="top" width="550"> <!-- CODE -->
-<textarea id="table1-1" rows="9" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby-2010.csv");
+<textarea id="table1-1" rows="9" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby_2018.csv");
 
 for (row: table) {
   print(row);
@@ -147,7 +147,7 @@ for (row: table) {
 <p style="max-width:1000">
 <table class="run">
 <tbody><tr><td valign="top" width="550"> <!-- CODE -->
-<textarea id="table1-2" rows="9" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby-2010.csv");
+<textarea id="table1-2" rows="9" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby_2018.csv");
 for (row: table) {
   if (row.getField("rank") == 6) {
     print(row);
@@ -177,7 +177,7 @@ for (row: table) {
 <p style="max-width:1000">
 <table class="run">
 <tbody><tr><td valign="top" width="550"> <!-- CODE -->
-<textarea id="table1-3" rows="10" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby-2010.csv");
+<textarea id="table1-3" rows="10" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby_2018.csv");
 for (row: table) {
   if (row.getField("name") == "Alice") {
     print(row);
@@ -206,7 +206,7 @@ Huomaa, että <b>yksittäinen</b> yhtäsuuruusmerkki <code>=</code> antaa arvon muu
 <p style="max-width:1000">
 <table class="run">
 <tbody><tr><td valign="top" width="550"> <!-- CODE -->
-<textarea id="table1-4" rows="10" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby-2010.csv");
+<textarea id="table1-4" rows="10" cols="60" class="tacode" spellcheck="false" onkeypress="return handleCR(this ,event)">table = new SimpleTable("baby_2018.csv");
 for (row: table) {
   if (row.getField("name") == "Alice") {
     print(row);
@@ -239,7 +239,7 @@ Kirjoita ylläolevaan ohjelmaan koodia, joka etsii nämä tiedot:
 </p><div><button onclick="unhide(this)">Show</button><div style="display:none">
 
 <p>If-kysely silmukan sisällä:
-</p><pre>table = new SimpleTable("baby-2010.csv");
+</p><pre>table = new SimpleTable("baby_2018.csv");
 for (row: table) {
   if (row.getField("name") == "Alice") {
     print(row);
